@@ -17,6 +17,7 @@ typedef struct s_general
 	pthread_mutex_t	mutx_id;
 	int 			next_id;
 
+
 	int				*fork_in_use;
 
 }t_data;
@@ -28,8 +29,10 @@ typedef struct s_philos
 	struct	timeval last_eat;
 
 	int		n_meals;
-
+	int		group;	
+	
 	t_data	*Data;
+		
 
 }t_philo;
 

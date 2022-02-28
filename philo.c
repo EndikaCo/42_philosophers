@@ -69,6 +69,7 @@ void ft_save_general_data(char **argv, t_data *Data, t_philo *Philos)
     Philos->id = 0;
     Philos->Data = Data;
 	Philos->n_meals = 0;
+	Philos->group = -1;
 
 	i = 0;
     while (i < Data->num_philos)
@@ -99,11 +100,6 @@ void f_sleep(t_philo *Philo)
 
 void ft_check_dead(t_philo *Philo)
 {
-	//printf("time1     = %ld\n", ft_millis(Philo->time1));
-	//printf("last eat     = %ld\n", ft_millis(Philo->last_eat));
-
-	//printf("%d %ld - lst %ld = %ld\n",Philo->id, ft_millis(Philo->time1), ft_millis(Philo->last_eat), ft_millis(Philo->time1) - ft_millis(Philo->last_eat));
-
 	if(ft_millis(Philo->time1) - ft_millis(Philo->last_eat) > Philo->Data->time_die)
 	{
 			printf("%ld %d is dead\n", ft_millis(Philo->time1), Philo->id);
@@ -139,32 +135,37 @@ void eat(t_philo *Philo)
 
 }
 
-/*
-void take_fork(t_philo Philo)
+void ft_take_fork(t_philo *Philo)
 {	
-	if(Philo.id == 0)
-		pthread_mutex_lock(&Philo.Data->mutx_forks[Philo.Data->num_philos]);//right
-	else
-		pthread_mutex_lock(&Philo.Data->mutx_forks[Philo.id - 1]);//right
+	int right_fork;  
+	if(Philo->id == 0)
+		right_fork = Philo->Data->num_philos -1;
+	else 
+		right_fork = Philo->id - 1;
+
+	pthread_mutex_lock(&Philo->Data->mutx_forks[Philo->id]);//left
+	pthread_mutex_lock(&Philo->Data->mutx_forks[right_fork]);//right
+	ft_check_dead(Philo);
 
 
-	pthread_mutex_lock(&Philo.Data->mutx_forks[Philo.id]);//left
-	gettimeofday(&Philo.time1, NULL);
-    printf("%ld %d has taken a fork\n", ft_millis(Philo.time1), Philo.id);
+	if(Philo->Data->fork_in_use[Philo->id] == -1 
+	&& Philo->Data->fork_in_use[right_fork] == -1)
+	{
+		Philo->Data->fork_in_use[Philo->id] = Philo->id;
+		gettimeofday(&Philo->time1, NULL);
+		
+    	printf("%ld %d has taken a fork\n", ft_millis(Philo->time1), Philo->id);
 
-	gettimeofday(&Philo.time1, NULL);
-    printf("%ld %d has taken a fork\n", ft_millis(Philo.time1), Philo.id);
-	eat(Philo);
-	if(Philo.id == 0)
-		pthread_mutex_unlock(&Philo.Data->mutx_forks[Philo.Data->num_philos]);//right
-	else
-		pthread_mutex_unlock(&Philo.Data->mutx_forks[Philo.id - 1]);//right
+		Philo->Data->fork_in_use[right_fork] = Philo->id;
+		gettimeofday(&Philo->time1, NULL);
+    	printf("%ld %d has taken a fork\n", ft_millis(Philo->time1), Philo->id);
+	}
 
-	pthread_mutex_unlock(&Philo.Data->mutx_forks[Philo.id]);//left
-	printf("%ld %d has left a fork\n", ft_millis(Philo.time1), Philo.id);
+	pthread_mutex_unlock(&Philo->Data->mutx_forks[Philo->id]);//left
+	pthread_mutex_unlock(&Philo->Data->mutx_forks[right_fork]);//left
 }
-*/
 
+/*
 void ft_take_fork(t_philo *Philo)
 {	
 	int right_fork;  
@@ -190,6 +191,7 @@ void ft_take_fork(t_philo *Philo)
 	pthread_mutex_unlock(&Philo->Data->mutx_forks[0]);
 
 }
+*/
 
 void ft_get_next_id(t_philo *Philo)
 {
@@ -198,6 +200,31 @@ void ft_get_next_id(t_philo *Philo)
 	pthread_mutex_unlock(&Philo->Data->mutx_id);
 }
 
+int isOdd(int n)
+{
+    return n & 1;
+}
+//od es inpar
+void ft_join_group(t_philo *Philo)
+{
+	if(!isOdd(Philo->Data->num_philos))
+	{
+		if(isOdd(Philo->id))
+			Philo->group = 1;
+		else
+			Philo->group = 2;	
+	}
+	if(isOdd(Philo->Data->num_philos))
+	{
+		if(!isOdd(Philo->id) && Philo->id != Philo->Data->num_philos - 1)
+			Philo->group = 1;
+		else if(isOdd(Philo->id))
+			Philo->group = 2;	
+		if(!isOdd(Philo->id) && Philo->id != 0)	
+			Philo->group = 3;	
+	}
+	printf("%d is group %d\n", Philo->id, Philo->group);
+}
 
 void* routine(void *arg)
 {
@@ -207,7 +234,7 @@ void* routine(void *arg)
 	struct	timeval timer;
 
 	ft_get_next_id(&Philo);
-	
+	ft_join_group(&Philo);
 	//gettimeofday(&Philo.last_eat, NULL);///////////////////////////////////////////start eat time
 	//gettimeofday(&Philo.time1, NULL);
 	//printf("current thread id:%u\n", (unsigned int)pthread_self());
