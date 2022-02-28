@@ -18,7 +18,6 @@ typedef struct s_general
 	int 			next_id;
 
 	int				*fork_in_use;
-	int				ready;
 
 }t_data;
 

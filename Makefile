@@ -1,6 +1,6 @@
 NAME	=	philo
 CC		=	gcc
-FLAGS	=	-Wall -Wextra -Werror -g -pthread #-g3 -fsanitize=address
+FLAGS	=	-Wall -Wextra -Werror -g -pthread -g3 -fsanitize=address
 SRC		=	philo.c
 
 all: $(SRC)

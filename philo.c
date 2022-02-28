@@ -53,13 +53,15 @@ void ft_save_general_data(char **argv, t_data *Data, t_philo *Philos)
     Data->time_die = ft_atoi(argv[2]);
     Data->time_eat = ft_atoi(argv[3]);
     Data->time_sleep = ft_atoi(argv[4]);
-	Data->next_id = 0;
-    //Data->min_meals_day = ft_atoi(argv[5]);//cuando dan el ultimo argumento
+
+   	if (argv[5])
+    	Data->min_meals_day = ft_atoi(argv[5]);
    
+	Data->next_id = 0;
+
     Data->Philosophers = malloc(sizeof(pthread_t) * Data->num_philos);
     Data->mutx_forks = malloc(sizeof(pthread_mutex_t) * Data->num_philos);
 	Data->fork_in_use = malloc(sizeof(int) * Data->num_philos);
-	Data->ready = 0;
 
 	while(i < Data->num_philos)
 		Data->fork_in_use[i++] = -1;
@@ -137,7 +139,8 @@ void eat(t_philo *Philo)
 
 }
 
-/*void take_fork(t_philo Philo)
+/*
+void take_fork(t_philo Philo)
 {	
 	if(Philo.id == 0)
 		pthread_mutex_lock(&Philo.Data->mutx_forks[Philo.Data->num_philos]);//right
@@ -162,7 +165,7 @@ void eat(t_philo *Philo)
 }
 */
 
-void ft_take_left_fork(t_philo *Philo)
+void ft_take_fork(t_philo *Philo)
 {	
 	int right_fork;  
 	if(Philo->id == 0)
@@ -204,21 +207,26 @@ void* routine(void *arg)
 	struct	timeval timer;
 
 	ft_get_next_id(&Philo);
-	usleep(100);////////////////////////wait a todos
-
-	gettimeofday(&Philo.last_eat, NULL);///////////////////////////////////////////start eat time
-	gettimeofday(&Philo.time1, NULL);
-	//printf("current thread id:%u\n", (unsigned int)pthread_self());
-	printf("Philo id:%d created\n", Philo.id);///////////////////////////////////
 	
-	gettimeofday(&timer, NULL);
+	//gettimeofday(&Philo.last_eat, NULL);///////////////////////////////////////////start eat time
+	//gettimeofday(&Philo.time1, NULL);
+	//printf("current thread id:%u\n", (unsigned int)pthread_self());
+	//printf("%ld Philo id:%d created\n", ft_millis(Philo.time1),  Philo.id);///////////////////////////////////
+	
 	while(1)
-	{	
+	{
 		if(Philo.Data->next_id == Philo.Data->num_philos)
 		{
-			ft_take_left_fork(&Philo);
-			eat(&Philo);
+			gettimeofday(&timer, NULL);
+			usleep(50);
+			break;
 		}
+	}
+
+	while(1)
+	{	
+			ft_take_fork(&Philo);
+			eat(&Philo);
 	}
 
 	free(arg);
@@ -237,11 +245,13 @@ int main(int argc, char *argv[])
 	}
 	ft_save_general_data(argv, &Data, &Philo);
 
+
 	int i = 0;
-		while(i < Data.num_philos){
+	while(i < Data.num_philos)
+	{
 		pthread_create(&Data.Philosophers[i++], NULL, &routine, &Philo);// falta controlar return
-		}
-		
+	}
+
 	i = 0;
 	while(i < Data.num_philos)
 		pthread_join(Data.Philosophers[i++],NULL); //falta controlar return
