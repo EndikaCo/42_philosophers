@@ -1,4 +1,4 @@
-#include "philo.h"
+#include "../inc/philo.h"
 
 int	ft_atoi(const char *nptr)
 {
@@ -26,4 +26,16 @@ int	ft_atoi(const char *nptr)
 		num = num * 10 + nptr[i++] - '0';
 	}
 	return (sign * num);
+}
+
+
+long int ft_millis(struct timeval time1)
+{
+	return (time1.tv_sec * 1000) + (time1.tv_usec / 1000);
+}
+
+//od es inpar
+int isOdd(int n)
+{
+    return n & 1;
 }

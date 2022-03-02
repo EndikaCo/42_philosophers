@@ -1,8 +1,13 @@
 #ifndef PHILO_H
 #define PHILO_H
-//
+
 #include <pthread.h>
 #include <sys/time.h>
+#include <pthread.h>
+#include <sys/time.h>
+#include<stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
 
 typedef struct s_general
 {
@@ -35,5 +40,11 @@ typedef struct s_philos
 		
 
 }t_philo;
+
+//UTILS
+int isOdd(int n);
+long int ft_millis(struct timeval time1);
+int	ft_atoi(const char *nptr);
+void* routine(void *arg);
 
 #endif
