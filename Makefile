@@ -3,12 +3,13 @@ CC		=	gcc
 RM		=	rm -rf
 FLAGS	=	-Wall -Wextra -Werror -g -pthread -g3 -fsanitize=address
 INCLUDE =	inc/philo.h
-SRC		=	src/main.c\
-			src/philo.c\
+SRC		=	src/main.c		\
+			src/philo.c		\
+			src/actions.c	\
 			src/utils.c
 
 all: $(SRC)
-	@ $(CC) $(FLAGS) $(INCLUDE) $(SRC) -o $(NAME)
+	@ $(CC) $(FLAGS) $(SRC) -o $(NAME)
 	@ echo "compilation OK"
 
 

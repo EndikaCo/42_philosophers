@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/03 19:39:25 by ecorreia          #+#    #+#             */
+/*   Updated: 2022/03/03 19:39:58 by ecorreia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 int	ft_atoi(const char *nptr)
@@ -28,14 +40,18 @@ int	ft_atoi(const char *nptr)
 	return (sign * num);
 }
 
-
-long int ft_millis(struct timeval time1)
+long int	ft_millis(struct timeval time1)
 {
-	return (time1.tv_sec * 1000) + (time1.tv_usec / 1000);
+	return ((time1.tv_sec * 1000) + (time1.tv_usec / 1000));
+}
+
+long int	ft_millis(struct timeval time1)
+{
+	return ((time1.tv_sec * 1000) + (time1.tv_usec / 1000));
 }
 
 //od es inpar
-int isOdd(int n)
+int	isodd(int n)
 {
-    return n & 1;
+	return (n & 1);
 }
