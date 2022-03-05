@@ -23,6 +23,8 @@ typedef struct s_general
 	int				*fork_in_use;
 	struct timeval	start_time;
 
+	int 			start;
+
 }t_data;
 
 typedef struct s_philos
@@ -39,10 +41,11 @@ typedef struct s_philos
 
 //UTILS
 int			isodd(int n);
-long int	ft_millis(struct timeval time1);
+long int	ft_getime(struct timeval time1);
 int			ft_atoi(const char *nptr);
 void*		routine(void *arg);
 void		ft_check_dead(t_philo *Philo);
 void		ft_take_fork(t_philo *Philo);
 void		eat(t_philo *Philo);
+long int	ft_millis(t_philo *_philo);
 #endif

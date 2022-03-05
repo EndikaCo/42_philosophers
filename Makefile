@@ -9,7 +9,7 @@ SRC		=	src/main.c		\
 			src/utils.c
 
 all: $(SRC)
-	@ $(CC) $(FLAGS) $(SRC) -o $(NAME)
+	@ $(CC) $(FLAGS) $(INCLUDE) $(SRC) -o $(NAME)
 	@ echo "compilation OK"
 
 

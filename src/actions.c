@@ -15,13 +15,13 @@
 void	think(t_philo *Philo)
 {
 	gettimeofday(&Philo->time1, NULL);
-	printf("%ld %d is thinking\n", ft_millis(Philo->time1), Philo->id);
+	printf("%ld %d is thinking\n", ft_millis(Philo), Philo->id);
 }
 
 void	f_sleep(t_philo *Philo)
 {
 	gettimeofday(&Philo->time1, NULL);
-	printf("%ld %d is sleeping\n", ft_millis(Philo->time1), Philo->id);
+	printf("%ld %d is sleeping\n", ft_millis(Philo), Philo->id);
 	usleep(Philo->_data->time_sleep * 1000);
 	think(Philo);
 }
@@ -40,7 +40,7 @@ void	eat(t_philo *Philo)
 		Philo->n_meals++;
 		gettimeofday(&Philo->time1, NULL);
 		//ft_check_dead(Philo);
-		printf("%ld %d is eating\n", ft_millis(Philo->time1), Philo->id);
+		printf("%ld %d is eating\n",  ft_millis(Philo), Philo->id);
 		gettimeofday(&Philo->last_eat, NULL);
 		usleep(Philo->_data->time_eat * 1000);
 		Philo->_data->fork_in_use[Philo->id] = -1;
@@ -65,10 +65,10 @@ void	ft_take_fork(t_philo *Philo)
 	{
 		Philo->_data->fork_in_use[Philo->id] = Philo->id;
 		gettimeofday(&Philo->time1, NULL);
-		printf("%ld %d has taken a fork\n", ft_millis(Philo->time1), Philo->id);
+		printf("%ld %d has taken a fork\n",  ft_millis(Philo), Philo->id);
 		Philo->_data->fork_in_use[right_fork] = Philo->id;
 		gettimeofday(&Philo->time1, NULL);
-		printf("%ld %d has taken a fork\n", ft_millis(Philo->time1), Philo->id);
+		printf("%ld %d has taken a fork\n",  ft_millis(Philo), Philo->id);
 	}
 	pthread_mutex_unlock(&Philo->_data->_mutx_forks[Philo->id]);//left
 	pthread_mutex_unlock(&Philo->_data->_mutx_forks[right_fork]);//left

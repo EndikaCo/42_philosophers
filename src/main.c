@@ -27,6 +27,7 @@ void	ft_save_general_data(char **argv, t_data *Data, t_philo *Philos)
 	Data->_philosophers = malloc(sizeof(pthread_t) * Data->num_philos);
 	Data->_mutx_forks = malloc(sizeof(pthread_mutex_t) * Data->num_philos);
 	Data->fork_in_use = malloc(sizeof(int) * Data->num_philos);
+	Data->start = 0;
 	while (i < Data->num_philos)
 		Data->fork_in_use[i++] = -1;
 	Philos->id = 0;
