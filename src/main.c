@@ -38,6 +38,7 @@ void	ft_save_general_data(char **argv, t_data *Data, t_philo *Philos)
 	while (i < Data->num_philos)
 		pthread_mutex_init(&Philos->_data->_mutx_forks[i++], NULL);
 	pthread_mutex_init(&Data->mutx_id, NULL);
+	pthread_mutex_init(&Data->mutx_dead, NULL);
 }
 
 int	main(int argc, char *argv[])

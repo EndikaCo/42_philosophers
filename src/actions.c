@@ -12,6 +12,33 @@
 
 #include "../inc/philo.h"
 
+
+int my_usleep(__attribute__((unused)) t_philo *philo, int time)
+{
+    struct timeval now;
+    struct timeval end;
+    int i;
+
+    gettimeofday(&now, NULL);
+    gettimeofday(&end, NULL);
+    i = 0;
+    while ((end.tv_sec * 1000 + end.tv_usec / 1000) - (now.tv_sec * 1000 + now.tv_usec / 1000)  < time)
+    {
+        usleep(100);
+        gettimeofday(&end, NULL);
+        if ((end.tv_sec * 1000 + end.tv_usec / 1000) - (now.tv_sec * 1000 + now.tv_usec / 1000) - i > 10)
+        {
+            i += 10;
+            //if (any_dead(philo))
+            //    return (1);
+        }
+    }
+    //if (any_dead(philo))
+    //            return (1);
+    return (0);
+
+}
+
 void	think(t_philo *Philo)
 {
 	gettimeofday(&Philo->time1, NULL);
@@ -22,7 +49,7 @@ void	f_sleep(t_philo *Philo)
 {
 	gettimeofday(&Philo->time1, NULL);
 	printf("%ld %d is sleeping\n", ft_millis(Philo), Philo->id);
-	usleep(Philo->_data->time_sleep * 1000);
+	my_usleep(Philo, Philo->_data->time_sleep);
 	think(Philo);
 }
 
@@ -39,10 +66,10 @@ void	eat(t_philo *Philo)
 	{
 		Philo->n_meals++;
 		gettimeofday(&Philo->time1, NULL);
-		//ft_check_dead(Philo);
+		ft_check_dead(Philo);/////////////////////////
 		printf("%ld %d is eating\n",  ft_millis(Philo), Philo->id);
 		gettimeofday(&Philo->last_eat, NULL);
-		usleep(Philo->_data->time_eat * 1000);
+		my_usleep(Philo, Philo->_data->time_eat);
 		Philo->_data->fork_in_use[Philo->id] = -1;
 		Philo->_data->fork_in_use[right_fork] = -1;
 		f_sleep(Philo);

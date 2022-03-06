@@ -57,3 +57,40 @@ int	isodd(int n)
 {
 	return (n & 1);
 }
+
+int is_dead(t_philo *philo)
+{
+    struct timeval time;
+    long int period;
+
+    gettimeofday(&time, NULL);
+    period = (time.tv_sec * 1000 + time.tv_usec / 1000) - (philo->last_eat.tv_sec * 1000 + philo->last_eat.tv_usec / 1000);
+    printf("%ld\n", period);
+	if (period > philo->_data->time_die)
+        return (1);
+    return (0);
+}
+/*
+int ft_check_dead2(t_philo *philo)
+{
+    pthread_mutex_lock(&philo->_data->mutx_dead);
+    if (philo->_data->death)
+    {
+        pthread_mutex_unlock(&philo->_data->mutx_dead);
+		philo->_data->start=0;///////////////////////////////////////
+		//printf("%ld %d died\n", ft_millis(philo) , philo->id);
+        return(1);
+    }
+
+
+    if (is_dead(philo))
+    {
+        philo->_data->death = 1;
+        pthread_mutex_unlock(&philo->_data->mutx_dead);
+        printf("%ld %d died\n", ft_millis(philo) , philo->id);
+        return (1);
+    }
+    pthread_mutex_unlock(&philo->_data->mutx_dead);
+    return (0);
+}
+*/

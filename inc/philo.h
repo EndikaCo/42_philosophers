@@ -22,8 +22,9 @@ typedef struct s_general
 	int 			next_id;
 	int				*fork_in_use;
 	struct timeval	start_time;
-
+	pthread_mutex_t	mutx_dead;
 	int 			start;
+	int				death;
 
 }t_data;
 
@@ -48,4 +49,5 @@ void		ft_check_dead(t_philo *Philo);
 void		ft_take_fork(t_philo *Philo);
 void		eat(t_philo *Philo);
 long int	ft_millis(t_philo *_philo);
+int			ft_check_dead2(t_philo *philo);
 #endif

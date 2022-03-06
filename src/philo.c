@@ -33,12 +33,11 @@ void	ft_join_group(t_philo *Philo)
 	printf("%d is group %d\n", Philo->id, Philo->group);
 }
 
-void	ft_check_dead(t_philo *Philo)
+void	ft_check_dead(t_philo *Philo)//////////////////////////
 {
-	if (ft_getime(Philo->time1) - ft_getime(Philo->last_eat)
-		> Philo->_data->time_die)
+	if (ft_millis(Philo) > Philo->_data->time_die)
 	{
-		printf("%ld %d is dead\n", ft_getime(Philo->time1), Philo->id);
+		printf("%ld %d is dead\n", ft_millis(Philo), Philo->id);
 		exit(0);
 	}
 }
@@ -84,7 +83,7 @@ void	*routine(void *arg)
 	while (1)
 	{	
 		while (_philo._data->start == 1)
-		{
+		{	
 			ft_take_fork(&_philo);
 			eat(&_philo);
 		}
