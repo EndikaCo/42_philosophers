@@ -28,6 +28,7 @@ void	ft_save_general_data(char **argv, t_data *Data, t_philo *Philos)
 	Data->_mutx_forks = malloc(sizeof(pthread_mutex_t) * Data->num_philos);
 	Data->fork_in_use = malloc(sizeof(int) * Data->num_philos);
 	Data->start = 0;
+	Data->etapa = 0;
 	while (i < Data->num_philos)
 		Data->fork_in_use[i++] = -1;
 	Philos->id = 0;
@@ -40,6 +41,7 @@ void	ft_save_general_data(char **argv, t_data *Data, t_philo *Philos)
 		pthread_mutex_init(&Philos->_data->_mutx_forks[i++], NULL);
 	pthread_mutex_init(&Data->mutx_id, NULL);
 	pthread_mutex_init(&Data->mutx_dead, NULL);
+	pthread_mutex_init(&Data->mutx_etapa, NULL);
 }
 
 int	main(int argc, char *argv[])
@@ -56,7 +58,6 @@ int	main(int argc, char *argv[])
 	ft_save_general_data(argv, &Data, &Philo);
 
 	gettimeofday(&Data.start_time, NULL);
-	printf("%ld\n", (Data.start_time.tv_sec * 1000) + (Data.start_time.tv_usec / 1000));
 	
 	i = 0;
 	while (i < Data.num_philos)

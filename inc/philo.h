@@ -23,8 +23,10 @@ typedef struct s_general
 	int				*fork_in_use;
 	struct timeval	start_time;
 	pthread_mutex_t	mutx_dead;
+	pthread_mutex_t	mutx_etapa;
 	int 			start;
 	int				death;
+	int				etapa;
 
 }t_data;
 
@@ -50,5 +52,6 @@ void		ft_take_fork(t_philo *Philo);
 void		eat(t_philo *Philo);
 long int	ft_millis(t_philo *_philo);
 int			ft_check_dead2(t_philo *philo);
-
+void	think(t_philo *Philo);
+void	f_sleep(t_philo *Philo);
 #endif
