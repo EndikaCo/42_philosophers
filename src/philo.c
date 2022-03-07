@@ -33,15 +33,6 @@ void	ft_join_group(t_philo *Philo)
 	printf("%d is group %d\n", Philo->id, Philo->group);
 }
 
-void	ft_check_dead(t_philo *Philo)//////////////////////////
-{
-	if (ft_millis(Philo) > Philo->_data->time_die)
-	{
-		printf("%ld %d is dead\n", ft_millis(Philo), Philo->id);
-		exit(0);
-	}
-}
-
 void	ft_get_next_id(t_philo *Philo)
 {
 	pthread_mutex_lock(&Philo->_data->mutx_id);
@@ -62,23 +53,32 @@ void ft_wait_start(t_philo *_philo)
 	_philo->_data->start = 1;
 }
 
+void	ft_check_dead(t_philo *Philo)//////////////////////////
+{	
+	struct timeval	actual_time;
+	gettimeofday(&actual_time, NULL);
+	//printf("%ld\n",ft_getime(actual_time) - ft_getime(Philo->last_eat));
+	if (ft_getime(actual_time) - ft_getime(Philo->last_eat) > Philo->_data->time_die)
+	{
+		printf("%ld %d is dead\n", ft_millis(Philo), Philo->id);
+		exit(0);
+	}
+}
+
 void	*routine(void *arg)
 {
 	t_philo			_philo;
 	
-
 	_philo = *(t_philo *)arg;
 	ft_get_next_id(&_philo);
 	//ft_join_group(&Philo);
-
-
-
 	//printf("timer now-->%ld\n", ft_millis(timer));
 	//printf("start time-->%ld\n", ft_millis(_philo._data->start_time));
 	//printf("resta-->%ld\n", ft_millis(timer) - ft_millis(_philo._data->start_time));
 	if(_philo.id == _philo._data->num_philos - 1)
 		ft_wait_start(&_philo);
-	
+
+	_philo.last_eat = _philo._data->start_time;
 	//printf("timer now-->%ld\n", ft_millis(timer));
 	while (1)
 	{	

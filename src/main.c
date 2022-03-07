@@ -34,6 +34,7 @@ void	ft_save_general_data(char **argv, t_data *Data, t_philo *Philos)
 	Philos->_data = Data;
 	Philos->n_meals = 0;
 	Philos->group = -1;
+	
 	i = 0;
 	while (i < Data->num_philos)
 		pthread_mutex_init(&Philos->_data->_mutx_forks[i++], NULL);
