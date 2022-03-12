@@ -34,7 +34,7 @@ typedef struct s_philos
 {
 	int 			id;
 	struct	timeval time1;
-	struct	timeval last_eat;
+	long int  		last_eat;
 	int				n_meals;
 	int				group;	
 	t_data			*_data;
@@ -54,4 +54,6 @@ long int	ft_millis(t_philo *_philo);
 int			ft_check_dead2(t_philo *philo);
 void	think(t_philo *Philo);
 void	f_sleep(t_philo *Philo);
+long int	ft_time(struct timeval time, t_philo *_philo);
+
 #endif

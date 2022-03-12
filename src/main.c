@@ -29,12 +29,14 @@ void	ft_save_general_data(char **argv, t_data *Data, t_philo *Philos)
 	Data->fork_in_use = malloc(sizeof(int) * Data->num_philos);
 	Data->start = 0;
 	Data->etapa = 0;
+
 	while (i < Data->num_philos)
 		Data->fork_in_use[i++] = -1;
 	Philos->id = 0;
 	Philos->_data = Data;
 	Philos->n_meals = 0;
 	Philos->group = -1;
+	Philos->last_eat = 0;
 	
 	i = 0;
 	while (i < Data->num_philos)

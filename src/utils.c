@@ -56,13 +56,19 @@ long int	ft_millis(t_philo *_philo)
 	return (ft_getime(_philo->time1) - ft_getime(_philo->_data->start_time));
 }
 
+long int	ft_time(struct timeval time, t_philo *_philo)
+{
+	return (ft_getime(time) - ft_getime(_philo->_data->start_time));
+}
+
+
   
 //od es inpar
 int	isodd(int n)
 {
 	return (n & 1);
 }
-
+/*
 int is_dead(t_philo *philo)
 {
     struct timeval time;
@@ -75,7 +81,7 @@ int is_dead(t_philo *philo)
         return (1);
     return (0);
 }
-/*
+
 int ft_check_dead2(t_philo *philo)
 {
     pthread_mutex_lock(&philo->_data->mutx_dead);

@@ -12,16 +12,6 @@
 
 #include "../inc/philo.h"
 
-void ft_etapa(t_philo *_philo)
-{
-	pthread_mutex_lock(&_philo->_data->mutx_etapa);
-	if(_philo->_data->etapa < 3)
-		_philo->_data->etapa++;
-	else _philo->_data->etapa = 0;
-	printf("round %d\n", _philo->_data->etapa);
-	pthread_mutex_unlock(&_philo->_data->mutx_etapa);
-}
-
 int my_usleep(__attribute__((unused)) t_philo *philo, int time)
 {
     struct timeval now;
@@ -54,6 +44,7 @@ void	think(t_philo *Philo)
 	printf("%ld %d is thinking\n", ft_millis(Philo), Philo->id);
 	if (isodd(Philo->_data->num_philos))
 		my_usleep(Philo, Philo->_data->time_eat);
+	usleep(1);
 }
 
 void	f_sleep(t_philo *Philo)
@@ -77,9 +68,9 @@ void	eat(t_philo *Philo)
 	{
 		Philo->n_meals++;
 		gettimeofday(&Philo->time1, NULL);
-		//ft_check_dead(Philo);/////////////////////////
+		ft_check_dead(Philo);/////////////////////////
 		printf("%ld %d is eating\n",  ft_millis(Philo), Philo->id);
-		gettimeofday(&Philo->last_eat, NULL);
+		Philo->last_eat = ft_time(Philo->time1, Philo);
 		my_usleep(Philo, Philo->_data->time_eat);
 
 		
@@ -101,6 +92,8 @@ void	ft_take_fork(t_philo *Philo)
 	pthread_mutex_lock(&Philo->_data->_mutx_forks[Philo->id]);//left
 	pthread_mutex_lock(&Philo->_data->_mutx_forks[right_fork]);//right
 
+
+	//ft_check_dead(Philo);
 	if (Philo->_data->fork_in_use[Philo->id] == -1
 		&& Philo->_data->fork_in_use[right_fork] == -1)
 	{
