@@ -55,5 +55,5 @@ int			ft_check_dead2(t_philo *philo);
 void	think(t_philo *Philo);
 void	f_sleep(t_philo *Philo);
 long int	ft_time(struct timeval time, t_philo *_philo);
-
+void ft_print_action(t_philo *Philo, char type);
 #endif

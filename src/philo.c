@@ -58,26 +58,31 @@ void ft_wait_start(t_philo *_philo)
 	
 }
 
-void print(long int t, t_philo *Philo, char type)
+void ft_print_action(t_philo *Philo, char type)
 {
+	struct timeval	actual_time;
 	
-	
-	//mutex aqui
+	pthread_mutex_lock(&Philo->_data->mutx_dead);
 	if(Philo->_data->start)
 	{
-		gettimeofday(&Philo->time1, NULL);
-		if(type = 'd')
-			printf("%ld %d is dead\n", t, Philo->id);
-		else if(type = 'f')
-			printf("%ld %d has taken a fork\n",  ft_millis(Philo), Philo->id);
-		else if(type = 'e')
-			printf("%ld %d is eating\n",  ft_millis(Philo), Philo->id);
-		else if(type = 't')
-			printf("%ld %d is thinking\n", ft_millis(Philo), Philo->id);
-		else if(type = 's')
-			printf("%ld %d is sleeping\n", ft_millis(Philo), Philo->id);
+		gettimeofday(&actual_time, NULL);
+		if(type == 'd')
+		{
+			printf("%ld %d is dead\n", ft_time(actual_time, Philo), Philo->id);
+			Philo->_data->start = 0;
+		}
+		else if(type == 'f')
+			printf("%ld %d has taken a fork\n",  ft_time(actual_time, Philo), Philo->id);
+		else if(type == 'e')
+			printf("%ld %d is eating\n",  ft_time(actual_time, Philo), Philo->id);
+		else if(type == 't')
+			printf("%ld %d is thinking\n", ft_time(actual_time, Philo), Philo->id);
+		else if(type == 's')
+			printf("%ld %d is sleeping\n", ft_time(actual_time, Philo), Philo->id);;
+		pthread_mutex_unlock(&Philo->_data->mutx_dead);
 	}
-	//mutex aqui
+	else
+		exit(0);
 }
 
 void	ft_check_dead(t_philo *Philo)//////////////////////////
@@ -87,9 +92,7 @@ void	ft_check_dead(t_philo *Philo)//////////////////////////
 	
 	if (ft_time(actual_time, Philo) - Philo->last_eat > Philo->_data->time_die)
 	{
-		printf("%ld %d is dead\n", ft_time(actual_time, Philo), Philo->id);
-		Philo->_data->start = 0;
-		exit(0);
+		ft_print_action(Philo, 'd');
 	}
 }
 
