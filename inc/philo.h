@@ -17,16 +17,13 @@ typedef struct s_general
 	int				time_sleep;
 	int				min_meals_day;
 	pthread_t		*_philosophers;
-	pthread_mutex_t *_mutx_forks;
+	pthread_mutex_t *mutx_forks;
 	pthread_mutex_t	mutx_id;
 	int 			next_id;
 	int				*fork_in_use;
 	struct timeval	start_time;
 	pthread_mutex_t	mutx_dead;
-	pthread_mutex_t	mutx_etapa;
 	int 			start;
-	int				death;
-	int				etapa;
 
 }t_data;
 
@@ -42,18 +39,31 @@ typedef struct s_philos
 
 }t_philo;
 
+//PHILO
+void	ft_join_group(t_philo *Philo);
+void	ft_get_next_id(t_philo *Philo);
+void	ft_wait_start(t_philo *_philo);
+void	ft_print_action(t_philo *Philo, char *str, int dead);
+void	ft_check_dead(t_philo *Philo);
+
 //UTILS
-int			isodd(int n);
-long int	ft_getime(struct timeval time1);
 int			ft_atoi(const char *nptr);
-void*		routine(void *arg);
-void		ft_check_dead(t_philo *Philo);
-void		ft_take_fork(t_philo *Philo);
-void		eat(t_philo *Philo);
+long int	ft_getime(struct timeval time1);
 long int	ft_millis(t_philo *_philo);
-int			ft_check_dead2(t_philo *philo);
+long int	ft_time(struct timeval time, t_philo *_philo);
+int			isodd(int n);
+
+//ACTIONS
+void ft_sleep(t_philo *_philo, int delay);
 void	think(t_philo *Philo);
 void	f_sleep(t_philo *Philo);
-long int	ft_time(struct timeval time, t_philo *_philo);
-void ft_print_action(t_philo *Philo, char type);
+void	eat(t_philo *Philo);
+void	ft_take_fork(t_philo *Philo);
+
+//MAIN
+void	ft_save_general_data(char **argv, t_data *_data, t_philo *_philo);
+void 	ft_one(t_philo *_philo);
+int 	ft_loop(t_philo *_philo);
+void	*routine(void *arg);
+
 #endif

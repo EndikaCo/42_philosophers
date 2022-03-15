@@ -12,39 +12,39 @@
 
 #include "../inc/philo.h"
 
-void my_usleep(t_philo *philo, int time)
+void ft_sleep(t_philo *_philo, int delay)
 {
-    struct timeval now;
+    struct timeval start;
     struct timeval end;
-    int i;
+    int time;
 
-    gettimeofday(&now, NULL);
+    time = 0;
+    gettimeofday(&start, NULL);
     gettimeofday(&end, NULL);
-    i = 0;
-    while (ft_getime(end) - ft_getime(now) < time)
+    while (ft_getime(end) - ft_getime(start) < delay)
     {
         usleep(100);
         gettimeofday(&end, NULL);
-        if (ft_getime(end) - ft_getime(now)  - i > 10)
-            i += 10;	
-		ft_check_dead(philo);
+        if (ft_getime(end) - ft_getime(start) - time > 10)
+            time += 10;	
+		ft_check_dead(_philo);
     }
 }
 
 void	think(t_philo *Philo)
 {
 	ft_check_dead(Philo);
-	ft_print_action(Philo, 't');
+	ft_print_action(Philo, "is thinking", 0);
 	if (isodd(Philo->_data->num_philos))
-		my_usleep(Philo, Philo->_data->time_eat);
+		ft_sleep(Philo, Philo->_data->time_eat);
 	usleep(1);
 }
 
 void	f_sleep(t_philo *Philo)
 {
 	ft_check_dead(Philo);
-	ft_print_action(Philo, 's');
-	my_usleep(Philo, Philo->_data->time_sleep);
+	ft_print_action(Philo, "is sleeping", 0);
+	ft_sleep(Philo, Philo->_data->time_sleep);
 	think(Philo);
 }
 
@@ -61,10 +61,10 @@ void	eat(t_philo *Philo)
 	{
 		ft_check_dead(Philo);
 		Philo->n_meals++;
-		ft_print_action(Philo, 'e');
+		ft_print_action(Philo, "is eating", 0);
 		gettimeofday(&Philo->time1, NULL);
 		Philo->last_eat = ft_time(Philo->time1, Philo);
-		my_usleep(Philo, Philo->_data->time_eat);
+		ft_sleep(Philo, Philo->_data->time_eat);
 
 		Philo->_data->fork_in_use[Philo->id] = -1;
 		Philo->_data->fork_in_use[right_fork] = -1;
@@ -80,18 +80,18 @@ void	ft_take_fork(t_philo *Philo)
 		right_fork = Philo->_data->num_philos -1;
 	else
 		right_fork = Philo->id - 1;
-	pthread_mutex_lock(&Philo->_data->_mutx_forks[Philo->id]);//left
-	pthread_mutex_lock(&Philo->_data->_mutx_forks[right_fork]);//right
+	pthread_mutex_lock(&Philo->_data->mutx_forks[Philo->id]);//left
+	pthread_mutex_lock(&Philo->_data->mutx_forks[right_fork]);//right
 
 	ft_check_dead(Philo);
 	if (Philo->_data->fork_in_use[Philo->id] == -1
 		&& Philo->_data->fork_in_use[right_fork] == -1)
 	{
 		Philo->_data->fork_in_use[Philo->id] = Philo->id;
-		ft_print_action(Philo, 'f');
+		ft_print_action(Philo, "has taken a fork", 0);
 		Philo->_data->fork_in_use[right_fork] = Philo->id;
-		ft_print_action(Philo, 'f');
+		ft_print_action(Philo, "has taken a fork", 0);
 	}
-	pthread_mutex_unlock(&Philo->_data->_mutx_forks[Philo->id]);//left
-	pthread_mutex_unlock(&Philo->_data->_mutx_forks[right_fork]);//left
+	pthread_mutex_unlock(&Philo->_data->mutx_forks[Philo->id]);//left
+	pthread_mutex_unlock(&Philo->_data->mutx_forks[right_fork]);//left
 }
