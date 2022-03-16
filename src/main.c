@@ -12,6 +12,9 @@
 
 #include "../inc/philo.h"
 
+/**
+ * @brief initialize general data
+ */
 void	ft_init_data(char **argv, t_data *_data)
 {
 	int	i;
@@ -36,6 +39,9 @@ void	ft_init_data(char **argv, t_data *_data)
 	pthread_mutex_init(&_data->mutx_dead, NULL);
 }
 
+/**
+ * @brief initialize philosophers data
+ */
 void	ft_init_philo(t_data *_data, t_philo *_philo)
 {
 	int	i;
@@ -50,6 +56,9 @@ void	ft_init_philo(t_data *_data, t_philo *_philo)
 		pthread_mutex_init(&_philo->_data->mutx_forks[i++], NULL);
 }
 
+/**
+ * @brief what to do in case of one unique philosopher
+ */
 void	ft_one(t_philo *_philo)
 {
 	usleep(_philo->_data->time_die);
@@ -86,6 +95,11 @@ int	ft_loop(t_philo *_philo)
 	return 0;
 }
 
+/**
+ * @brief routine of philoshopher in a new thread
+ * @param arg this is the pointer to the structute with all the data
+ * @return void* nothing returns
+ */
 void	*routine(void *arg)
 {
 	t_philo			_philo;

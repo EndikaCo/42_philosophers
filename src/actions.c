@@ -12,25 +12,6 @@
 
 #include "../inc/philo.h"
 
-void ft_udelay(t_philo *_philo, int delay)
-{
-    struct timeval 	start;
-    struct timeval 	end;
-    int				time;
-
-    time = 0;
-    gettimeofday(&start, NULL);
-    gettimeofday(&end, NULL);
-    while (ft_getime(end) - ft_getime(start) < delay)
-    {
-        usleep(100);
-        gettimeofday(&end, NULL);
-        if (ft_getime(end) - ft_getime(start) - time > 10)
-            time += 10;	
-		ft_check_dead(_philo);
-    }
-}
-
 void	ft_think(t_philo *_philo)
 {
 	ft_check_dead(_philo);
@@ -80,9 +61,8 @@ void	ft_take_fork(t_philo *_philo)
 		right_fork = _philo->_data->num_philos -1;
 	else
 		right_fork = _philo->id - 1;
-	pthread_mutex_lock(&_philo->_data->mutx_forks[_philo->id]);//left
-	pthread_mutex_lock(&_philo->_data->mutx_forks[right_fork]);//right
-
+	pthread_mutex_lock(&_philo->_data->mutx_forks[_philo->id]);
+	pthread_mutex_lock(&_philo->_data->mutx_forks[right_fork]);
 	ft_check_dead(_philo);
 	if (_philo->_data->fork_in_use[_philo->id] == -1
 		&& _philo->_data->fork_in_use[right_fork] == -1)
@@ -92,6 +72,29 @@ void	ft_take_fork(t_philo *_philo)
 		_philo->_data->fork_in_use[right_fork] = _philo->id;
 		ft_print(_philo, "has taken a fork", 0);
 	}
-	pthread_mutex_unlock(&_philo->_data->mutx_forks[_philo->id]);//left
-	pthread_mutex_unlock(&_philo->_data->mutx_forks[right_fork]);//left
+	pthread_mutex_unlock(&_philo->_data->mutx_forks[_philo->id]);
+	pthread_mutex_unlock(&_philo->_data->mutx_forks[right_fork]);
+}
+
+/**
+ * @brief waits time defined by delay variable
+ * @param delay this is the time to wait (in milliseconds)
+ */
+void ft_udelay(t_philo *_philo, int delay)
+{
+    struct timeval 	start;
+    struct timeval 	end;
+    int				time;
+
+    time = 0;
+    gettimeofday(&start, NULL);
+    gettimeofday(&end, NULL);
+    while (ft_getime(end) - ft_getime(start) < delay)
+    {
+        usleep(100);
+        gettimeofday(&end, NULL);
+        if (ft_getime(end) - ft_getime(start) - time > 10)
+            time += 10;	
+		ft_check_dead(_philo);
+    }
 }

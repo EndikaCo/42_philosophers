@@ -12,6 +12,10 @@
 
 #include "../inc/philo.h"
 
+/**
+ * @brief puts the philosopher in a group depending on whether 
+ * it is even or uneven
+ */
 void	ft_join_group(t_philo *_philo)
 {
 	if (!ft_isodd(_philo->_data->num_philos))
@@ -23,7 +27,8 @@ void	ft_join_group(t_philo *_philo)
 	}
 	if (ft_isodd(_philo->_data->num_philos))
 	{
-		if (!ft_isodd(_philo->id) && _philo->id != _philo->_data->num_philos - 1)
+		if (!ft_isodd(_philo->id) && _philo->id 
+			!= _philo->_data->num_philos - 1)
 			_philo->group = 1;
 		else if (ft_isodd(_philo->id))
 			_philo->group = 2;
@@ -32,6 +37,9 @@ void	ft_join_group(t_philo *_philo)
 	}
 }
 
+/**
+ * @brief get next id available protected with mutex to avoid duplicates
+ */
 void	ft_get_next_id(t_philo *_philo)
 {
 	pthread_mutex_lock(&_philo->_data->mutx_id);
@@ -39,12 +47,17 @@ void	ft_get_next_id(t_philo *_philo)
 	pthread_mutex_unlock(&_philo->_data->mutx_id);
 }
 
+/**
+ * @brief wait a while until all threads are created
+ *  and starts time
+ */
 void	ft_wait_start(t_philo *_philo)
 {
 	struct timeval	timer;
 
 	gettimeofday(&timer, NULL);
-	while(ft_getime(timer) - ft_getime(_philo->_data->start_time) < 10 * _philo->_data->num_philos)
+	while(ft_getime(timer) - ft_getime(_philo->_data->start_time)
+		< 10 * _philo->_data->num_philos)
 		gettimeofday(&timer, NULL);
 	usleep(10);
 	gettimeofday(&_philo->_data->start_time, NULL);
@@ -52,6 +65,11 @@ void	ft_wait_start(t_philo *_philo)
 	
 }
 
+/**
+ * @brief prints the status of the philosopher protected with mutex
+ * @param str estate of the philosopher to print
+ * @param dead return 0 if alive, else declares dead
+ */
 void	ft_print(t_philo *_philo, char *str, int dead)
 {
 	struct timeval	actual_time;
@@ -61,17 +79,19 @@ void	ft_print(t_philo *_philo, char *str, int dead)
 	{
 		gettimeofday(&actual_time, NULL);
 		if(dead == 1)
-		{
 			_philo->_data->start = 0;
-		}
-		printf("%ld %d %s\n",  ft_time(actual_time, _philo), _philo->id, str);
-	
+		printf("%ld %d %s\n",  ft_time(actual_time, _philo),
+			_philo->id, str);
 		pthread_mutex_unlock(&_philo->_data->mutx_dead);
 	}
 	else
 		exit(0);
 }
 
+/**
+ * @brief check if the philosopher is dead or not
+ * to print the state
+ */
 void	ft_check_dead(t_philo *_philo)
 {	
 	struct timeval	actual_time;

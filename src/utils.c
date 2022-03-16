@@ -40,17 +40,31 @@ int	ft_atoi(const char *nptr)
 	return (sign * num);
 }
 
+/**
+ * @brief get the actual time in millisecs since process creation
+ * @param time1 structure of time
+ * @return long int with actual time in milliseconds
+ */
 long int	ft_getime(struct timeval time1)
 {
 	return ((time1.tv_sec * 1000) + (time1.tv_usec / 1000));
 }
 
+/**
+ * @brief get the start time minus the time sent by parameter
+ * @param time to compare with
+ * @return long int  returns the start time minus the time sent by parameter
+ */
 long int	ft_time(struct timeval time, t_philo *_philo)
 {
 	return (ft_getime(time) - ft_getime(_philo->_data->start_time));
 }
 
-//odd es inpar
+/**
+ * @brief checks if is pair or odd
+ * @param n number to check
+ * @return int 1 if off, and 0 if is pair
+ */
 int	ft_isodd(int n)
 {
 	return (n & 1);
