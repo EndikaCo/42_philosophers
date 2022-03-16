@@ -45,18 +45,13 @@ long int	ft_getime(struct timeval time1)
 	return ((time1.tv_sec * 1000) + (time1.tv_usec / 1000));
 }
 
-long int	ft_millis(t_philo *_philo)
-{
-	return (ft_getime(_philo->time1) - ft_getime(_philo->_data->start_time));
-}
-
 long int	ft_time(struct timeval time, t_philo *_philo)
 {
 	return (ft_getime(time) - ft_getime(_philo->_data->start_time));
 }
 
-//od es inpar
-int	isodd(int n)
+//odd es inpar
+int	ft_isodd(int n)
 {
 	return (n & 1);
 }

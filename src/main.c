@@ -12,7 +12,7 @@
 
 #include "../inc/philo.h"
 
-void	ft_save_general_data(char **argv, t_data *_data, t_philo *_philo)
+void	ft_init_data(char **argv, t_data *_data)
 {
 	int	i;
 
@@ -26,28 +26,31 @@ void	ft_save_general_data(char **argv, t_data *_data, t_philo *_philo)
 	else
 		_data->min_meals_day = -1;
 	_data->next_id = 0;
+	_data->start = 0;
 	_data->_philosophers = malloc(sizeof(pthread_t) * _data->num_philos);
 	_data->mutx_forks = malloc(sizeof(pthread_mutex_t) * _data->num_philos);
 	_data->fork_in_use = malloc(sizeof(int) * _data->num_philos);
-	_data->start = 0;
-
 	while (i < _data->num_philos)
 		_data->fork_in_use[i++] = -1;
+	pthread_mutex_init(&_data->mutx_id, NULL);
+	pthread_mutex_init(&_data->mutx_dead, NULL);
+}
+
+void	ft_init_philo(t_data *_data, t_philo *_philo)
+{
+	int	i;
+
+	i = 0;
 	_philo->id = 0;
 	_philo->_data = _data;
 	_philo->n_meals = 0;
 	_philo->group = -1;
 	_philo->last_eat = 0;
-	
-	i = 0;
 	while (i < _data->num_philos)
 		pthread_mutex_init(&_philo->_data->mutx_forks[i++], NULL);
-	pthread_mutex_init(&_data->mutx_id, NULL);
-	pthread_mutex_init(&_data->mutx_dead, NULL);
-
 }
 
-void ft_one(t_philo *_philo)
+void	ft_one(t_philo *_philo)
 {
 	usleep(_philo->_data->time_die);
 	printf("1 %d has taken a fork\n", _philo->id);
@@ -55,7 +58,7 @@ void ft_one(t_philo *_philo)
 	exit(0);
 }
 
-int ft_loop(t_philo *_philo)
+int	ft_loop(t_philo *_philo)
 {
 	int i;
 	
@@ -76,9 +79,8 @@ int ft_loop(t_philo *_philo)
 			}
 			if( _philo->_data->min_meals_day == _philo->n_meals)//
 				exit(0);
-
 			ft_take_fork(_philo);
-			eat(_philo);
+			ft_eat(_philo);
 		}
 	}
 	return 0;
@@ -100,8 +102,8 @@ void	*routine(void *arg)
 
 int	main(int argc, char *argv[])
 {
-	t_data		Data;
-	t_philo		Philo;
+	t_data		_data;
+	t_philo		_philo;
 	int			i;
 
 	if (argc != 5 && argc != 6)
@@ -109,15 +111,17 @@ int	main(int argc, char *argv[])
 		write(1, "Error\n", 6);
 		return (1);
 	}
-	ft_save_general_data(argv, &Data, &Philo);
-	gettimeofday(&Data.start_time, NULL);
+	ft_init_data(argv, &_data);
+	ft_init_philo(&_data, &_philo);
+	gettimeofday(&_data.start_time, NULL);
 	i = 0;
-	while (i < Data.num_philos)
-		pthread_create(&Data._philosophers[i++], NULL, &routine, &Philo);//ret
+	while (i < _data.num_philos)
+		pthread_create(&_data._philosophers[i++], NULL, &routine, &_philo);
 	i = 0;
-	while (i < Data.num_philos)
-		pthread_join(Data._philosophers[i++], NULL); //controlar return
+	while (i < _data.num_philos)
+		pthread_join(_data._philosophers[i++], NULL);
 	i = 0;
-	while (i < Data.num_philos)
-		pthread_mutex_destroy(&Data.mutx_forks[i++]);
+	while (i < _data.num_philos)
+		pthread_mutex_destroy(&_data.mutx_forks[i++]);
+	
 }

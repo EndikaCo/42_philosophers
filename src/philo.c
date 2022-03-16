@@ -12,79 +12,72 @@
 
 #include "../inc/philo.h"
 
-void	ft_join_group(t_philo *Philo)
+void	ft_join_group(t_philo *_philo)
 {
-	if (!isodd(Philo->_data->num_philos))
+	if (!ft_isodd(_philo->_data->num_philos))
 	{
-		if (isodd(Philo->id))
-			Philo->group = 1;
+		if (ft_isodd(_philo->id))
+			_philo->group = 1;
 		else
-			Philo->group = 2;
+			_philo->group = 2;
 	}
-	if (isodd(Philo->_data->num_philos))
+	if (ft_isodd(_philo->_data->num_philos))
 	{
-		if (!isodd(Philo->id) && Philo->id != Philo->_data->num_philos - 1)
-			Philo->group = 1;
-		else if (isodd(Philo->id))
-			Philo->group = 2;
-		if (!isodd(Philo->id) && Philo->id != 0)
-			Philo->group = 3;
+		if (!ft_isodd(_philo->id) && _philo->id != _philo->_data->num_philos - 1)
+			_philo->group = 1;
+		else if (ft_isodd(_philo->id))
+			_philo->group = 2;
+		if (!ft_isodd(_philo->id) && _philo->id != 0)
+			_philo->group = 3;
 	}
 }
 
-void	ft_get_next_id(t_philo *Philo)
+void	ft_get_next_id(t_philo *_philo)
 {
-	pthread_mutex_lock(&Philo->_data->mutx_id);
-	Philo->id = Philo->_data->next_id++;
-	pthread_mutex_unlock(&Philo->_data->mutx_id);
+	pthread_mutex_lock(&_philo->_data->mutx_id);
+	_philo->id = _philo->_data->next_id++;
+	pthread_mutex_unlock(&_philo->_data->mutx_id);
 }
 
-void ft_wait_start(t_philo *_philo)
+void	ft_wait_start(t_philo *_philo)
 {
 	struct timeval	timer;
 
 	gettimeofday(&timer, NULL);
-
-	//while(_philo->_data->next_id != _philo->_data->num_philos)
-	usleep(5);
-	
 	while(ft_getime(timer) - ft_getime(_philo->_data->start_time) < 10 * _philo->_data->num_philos)
 		gettimeofday(&timer, NULL);
-	//printf("timer now-->%ld\n", ft_getime(timer));
-
 	usleep(10);
-
 	gettimeofday(&_philo->_data->start_time, NULL);
 	_philo->_data->start = 1;
 	
 }
 
-void ft_print_action(t_philo *Philo, char *str, int dead)
+void	ft_print(t_philo *_philo, char *str, int dead)
 {
 	struct timeval	actual_time;
 	
-	pthread_mutex_lock(&Philo->_data->mutx_dead);
-	if(Philo->_data->start)
+	pthread_mutex_lock(&_philo->_data->mutx_dead);
+	if(_philo->_data->start)
 	{
 		gettimeofday(&actual_time, NULL);
 		if(dead == 1)
 		{
-			Philo->_data->start = 0;
+			_philo->_data->start = 0;
 		}
-		printf("%ld %d %s\n",  ft_time(actual_time, Philo), Philo->id, str);
+		printf("%ld %d %s\n",  ft_time(actual_time, _philo), _philo->id, str);
 	
-		pthread_mutex_unlock(&Philo->_data->mutx_dead);
+		pthread_mutex_unlock(&_philo->_data->mutx_dead);
 	}
 	else
 		exit(0);
 }
 
-void	ft_check_dead(t_philo *Philo)//////////////////////////
+void	ft_check_dead(t_philo *_philo)
 {	
 	struct timeval	actual_time;
 	gettimeofday(&actual_time, NULL);
 	
-	if (ft_time(actual_time, Philo) - Philo->last_eat > Philo->_data->time_die)
-		ft_print_action(Philo, "is dead", 1);
+	if (ft_time(actual_time, _philo) - _philo->last_eat > _philo->_data->time_die)
+		ft_print(_philo, "is dead", 1);
 }
 

@@ -12,11 +12,11 @@
 
 #include "../inc/philo.h"
 
-void ft_sleep(t_philo *_philo, int delay)
+void ft_udelay(t_philo *_philo, int delay)
 {
-    struct timeval start;
-    struct timeval end;
-    int time;
+    struct timeval 	start;
+    struct timeval 	end;
+    int				time;
 
     time = 0;
     gettimeofday(&start, NULL);
@@ -31,67 +31,67 @@ void ft_sleep(t_philo *_philo, int delay)
     }
 }
 
-void	think(t_philo *Philo)
+void	ft_think(t_philo *_philo)
 {
-	ft_check_dead(Philo);
-	ft_print_action(Philo, "is thinking", 0);
-	if (isodd(Philo->_data->num_philos))
-		ft_sleep(Philo, Philo->_data->time_eat);
+	ft_check_dead(_philo);
+	ft_print(_philo, "is thinking", 0);
+	if (ft_isodd(_philo->_data->num_philos))
+		ft_udelay(_philo, _philo->_data->time_eat);
 	usleep(1);
 }
 
-void	f_sleep(t_philo *Philo)
+void	ft_sleep(t_philo *_philo)
 {
-	ft_check_dead(Philo);
-	ft_print_action(Philo, "is sleeping", 0);
-	ft_sleep(Philo, Philo->_data->time_sleep);
-	think(Philo);
+	ft_check_dead(_philo);
+	ft_print(_philo, "is sleeping", 0);
+	ft_udelay(_philo, _philo->_data->time_sleep);
+	ft_think(_philo);
 }
 
-void	eat(t_philo *Philo)
+void	ft_eat(t_philo *_philo)
 {
 	int	right_fork;
 
-	if (Philo->id == 0)
-		right_fork = Philo->_data->num_philos -1;
+	if (_philo->id == 0)
+		right_fork = _philo->_data->num_philos -1;
 	else
-		right_fork = Philo->id - 1;
-	if (Philo->_data->fork_in_use[Philo->id] == Philo->id
-		&& Philo->_data->fork_in_use[right_fork] == Philo->id)
+		right_fork = _philo->id - 1;
+	if (_philo->_data->fork_in_use[_philo->id] == _philo->id
+		&& _philo->_data->fork_in_use[right_fork] == _philo->id)
 	{
-		ft_check_dead(Philo);
-		Philo->n_meals++;
-		ft_print_action(Philo, "is eating", 0);
-		gettimeofday(&Philo->time1, NULL);
-		Philo->last_eat = ft_time(Philo->time1, Philo);
-		ft_sleep(Philo, Philo->_data->time_eat);
+		ft_check_dead(_philo);
+		_philo->n_meals++;
+		ft_print(_philo, "is eating", 0);
+		gettimeofday(&_philo->time1, NULL);
+		_philo->last_eat = ft_time(_philo->time1, _philo);
+		ft_udelay(_philo, _philo->_data->time_eat);
 
-		Philo->_data->fork_in_use[Philo->id] = -1;
-		Philo->_data->fork_in_use[right_fork] = -1;
-		f_sleep(Philo);
+		_philo->_data->fork_in_use[_philo->id] = -1;
+		_philo->_data->fork_in_use[right_fork] = -1;
+		ft_sleep(_philo);
 	}
 }
 
-void	ft_take_fork(t_philo *Philo)
+void	ft_take_fork(t_philo *_philo)
 {	
 	int	right_fork;
 
-	if (Philo->id == 0)
-		right_fork = Philo->_data->num_philos -1;
+	if (_philo->id == 0)
+		right_fork = _philo->_data->num_philos -1;
 	else
-		right_fork = Philo->id - 1;
-	pthread_mutex_lock(&Philo->_data->mutx_forks[Philo->id]);//left
-	pthread_mutex_lock(&Philo->_data->mutx_forks[right_fork]);//right
+		right_fork = _philo->id - 1;
+	pthread_mutex_lock(&_philo->_data->mutx_forks[_philo->id]);//left
+	pthread_mutex_lock(&_philo->_data->mutx_forks[right_fork]);//right
 
-	ft_check_dead(Philo);
-	if (Philo->_data->fork_in_use[Philo->id] == -1
-		&& Philo->_data->fork_in_use[right_fork] == -1)
+	ft_check_dead(_philo);
+	if (_philo->_data->fork_in_use[_philo->id] == -1
+		&& _philo->_data->fork_in_use[right_fork] == -1)
 	{
-		Philo->_data->fork_in_use[Philo->id] = Philo->id;
-		ft_print_action(Philo, "has taken a fork", 0);
-		Philo->_data->fork_in_use[right_fork] = Philo->id;
-		ft_print_action(Philo, "has taken a fork", 0);
+		_philo->_data->fork_in_use[_philo->id] = _philo->id;
+		ft_print(_philo, "has taken a fork", 0);
+		_philo->_data->fork_in_use[right_fork] = _philo->id;
+		ft_print(_philo, "has taken a fork", 0);
 	}
-	pthread_mutex_unlock(&Philo->_data->mutx_forks[Philo->id]);//left
-	pthread_mutex_unlock(&Philo->_data->mutx_forks[right_fork]);//left
+	pthread_mutex_unlock(&_philo->_data->mutx_forks[_philo->id]);//left
+	pthread_mutex_unlock(&_philo->_data->mutx_forks[right_fork]);//left
 }
