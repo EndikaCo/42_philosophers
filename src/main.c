@@ -84,7 +84,7 @@ int	ft_loop(t_philo *_philo)
 			if((_philo->group == 1 || _philo->group == 3) && i == 0)
 			{
 				i = 1;
-				usleep(5);
+				ft_udelay(_philo, 50);
 			}
 			if( _philo->_data->min_meals_day == _philo->n_meals)//
 				exit(0);
@@ -108,7 +108,8 @@ void	*routine(void *arg)
 	ft_get_next_id(&_philo);
 	ft_join_group(&_philo);
 	if(_philo.id == _philo._data->num_philos - 1)
-		ft_wait_start(&_philo);
+		_philo._data->start = 1;
+	gettimeofday(&_philo._data->start_time, NULL);
 	ft_loop(&_philo);
 	free(arg);
 	return (NULL);
