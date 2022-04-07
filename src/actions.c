@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 19:57:18 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/03 19:59:44 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/07 18:59:01 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	ft_eat(t_philo *_philo)
 		gettimeofday(&_philo->time1, NULL);
 		_philo->last_eat = ft_time(_philo->time1, _philo);
 		ft_udelay(_philo, _philo->_data->time_eat);
-
 		_philo->_data->fork_in_use[_philo->id] = -1;
 		_philo->_data->fork_in_use[right_fork] = -1;
 		ft_sleep(_philo);
@@ -80,21 +79,21 @@ void	ft_take_fork(t_philo *_philo)
  * @brief waits time defined by delay variable
  * @param delay this is the time to wait (in milliseconds)
  */
-void ft_udelay(t_philo *_philo, int delay)
+void	ft_udelay(t_philo *_philo, int delay)
 {
-    struct timeval 	start;
-    struct timeval 	end;
-    int				time;
+	struct timeval	start;
+	struct timeval	end;
+	int				time;
 
-    time = 0;
-    gettimeofday(&start, NULL);
-    gettimeofday(&end, NULL);
-    while (ft_getime(end) - ft_getime(start) < delay)
-    {
-        usleep(100);
-        gettimeofday(&end, NULL);
-        if (ft_getime(end) - ft_getime(start) - time > 10)
-            time += 10;	
+	time = 0;
+	gettimeofday(&start, NULL);
+	gettimeofday(&end, NULL);
+	while (ft_getime(end) - ft_getime(start) < delay)
+	{
+		usleep(100);
+		gettimeofday(&end, NULL);
+		if (ft_getime(end) - ft_getime(start) - time > 10)
+			time += 10;
 		ft_check_dead(_philo);
-    }
+	}
 }

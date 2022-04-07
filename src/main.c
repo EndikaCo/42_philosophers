@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 19:09:30 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/03/03 20:00:53 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/07 18:50:39 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,43 +56,32 @@ void	ft_init_philo(t_data *_data, t_philo *_philo)
 		pthread_mutex_init(&_philo->_data->mutx_forks[i++], NULL);
 }
 
-/**
- * @brief what to do in case of one unique philosopher
- */
-void	ft_one(t_philo *_philo)
-{
-	usleep(_philo->_data->time_die);
-	printf("1 %d has taken a fork\n", _philo->id);
-	printf("%d %d is dead\n", _philo->_data->time_die, _philo->id);
-	exit(0);
-}
-
 int	ft_loop(t_philo *_philo)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (1)
 	{	
 		if (_philo->_data->num_philos == 1 && _philo->_data->start == 1)
 		{
 			ft_one(_philo);
-			return 0;
+			return (0);
 		}
 		while (_philo->_data->start == 1)
 		{	
-			if((_philo->group == 1 || _philo->group == 3) && i == 0)
+			if ((_philo->group == 1 || _philo->group == 3) && i == 0)
 			{
 				i = 1;
 				ft_udelay(_philo, 50);
 			}
-			if( _philo->_data->min_meals_day == _philo->n_meals)//
+			if (_philo->_data->min_meals_day == _philo->n_meals)
 				exit(0);
 			ft_take_fork(_philo);
 			ft_eat(_philo);
 		}
 	}
-	return 0;
+	return (0);
 }
 
 /**
@@ -103,11 +92,11 @@ int	ft_loop(t_philo *_philo)
 void	*routine(void *arg)
 {
 	t_philo			_philo;
-	
+
 	_philo = *(t_philo *)arg;
 	ft_get_next_id(&_philo);
 	ft_join_group(&_philo);
-	if(_philo.id == _philo._data->num_philos - 1)
+	if (_philo.id == _philo._data->num_philos - 1)
 		_philo._data->start = 1;
 	gettimeofday(&_philo._data->start_time, NULL);
 	ft_loop(&_philo);
@@ -138,5 +127,4 @@ int	main(int argc, char *argv[])
 	i = 0;
 	while (i < _data.num_philos)
 		pthread_mutex_destroy(&_data.mutx_forks[i++]);
-	
 }
