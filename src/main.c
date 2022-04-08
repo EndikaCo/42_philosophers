@@ -70,6 +70,7 @@ int	ft_loop(t_philo *_philo)
 		}
 		while (_philo->_data->start == 1)
 		{	
+			usleep(50);
 			if ((_philo->group == 1 || _philo->group == 3) && i == 0)
 			{
 				i = 1;
@@ -79,6 +80,7 @@ int	ft_loop(t_philo *_philo)
 				exit(0);
 			ft_take_fork(_philo);
 			ft_eat(_philo);
+
 		}
 	}
 	return (0);
