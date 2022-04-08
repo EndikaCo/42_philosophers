@@ -6,11 +6,14 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 19:29:17 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/04/08 19:29:20 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/08 19:42:32 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 /**
  * @brief puts the philosopher in a group depending on whether 

@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 18:30:10 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/04/07 18:34:57 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/08 19:42:14 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 
 # include <pthread.h>
 # include <sys/time.h>
-# include <pthread.h>
-# include <sys/time.h>
-# include<stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
 
 typedef struct s_general
 {

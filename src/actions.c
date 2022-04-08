@@ -6,11 +6,13 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 19:57:18 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/04/08 17:40:59 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/08 19:41:52 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+#include <unistd.h>
+#include <stdio.h>
 
 void	ft_think(t_philo *_philo)
 {

@@ -1,16 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   maine.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 19:09:30 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/04/08 18:44:28 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/08 19:42:23 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
  * @brief initialize general data
