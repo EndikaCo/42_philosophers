@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 19:57:18 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/04/07 18:59:01 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/08 17:40:59 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	ft_eat(t_philo *_philo)
 		ft_udelay(_philo, _philo->_data->time_eat);
 		_philo->_data->fork_in_use[_philo->id] = -1;
 		_philo->_data->fork_in_use[right_fork] = -1;
-		
 		ft_sleep(_philo);
 	}
 }

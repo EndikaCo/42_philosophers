@@ -6,7 +6,7 @@
 /*   By: ecorreia <ecorreia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 19:32:03 by ecorreia          #+#    #+#             */
-/*   Updated: 2022/04/07 18:51:00 by ecorreia         ###   ########.fr       */
+/*   Updated: 2022/04/08 19:05:43 by ecorreia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	ft_get_next_id(t_philo *_philo)
  * @brief what to do in case of one unique philosopher
  */
 void	ft_one(t_philo *_philo)
-{
-	usleep(_philo->_data->time_die);
+{	
 	printf("1 %d has taken a fork\n", _philo->id);
+	usleep(_philo->_data->time_die);
 	printf("%d %d is dead\n", _philo->_data->time_die, _philo->id);
 	exit(0);
 }
